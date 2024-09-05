@@ -1,22 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stock Price Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+
+<div class="container">
     <h1>Stock Price Prediction</h1>
-    <form action="/predict" method="post">
-        <label for="company">Company:</label>
-        <select id="company" name="company">
-            <option value="AAPL">AAPL</option>
-            <option value="MSFT">MSFT</option>
-            <option value="GOOG">GOOG</option>
-            <option value="AMZN">AMZN</option>
-        </select><br><br>
-        <label for="date">Enter Date (YYYY-MM-DD):</label><br>
+    <form action="/predict" method="POST">
+        <label for="company">Select Company:</label>
+        <select id="company" name="company" required>
+            <option value="AAPL">Apple (AAPL)</option>
+            <option value="MSFT">Microsoft (MSFT)</option>
+            <option value="GOOG">Google (GOOG)</option>
+            <option value="AMZN">Amazon (AMZN)</option>
+            <option value="META">Facebook (META)</option>
+            <option value="NFLX">Netflix (NFLX)</option>
+            <option value="TSLA">Tesla (TSLA)</option>
+            <option value="NVDA">Nvidia (NVDA)</option>
+            <option value="INTC">Intel Corporation (INTC)</option>
+            <option value="CSCO">Cisco (CSCO)</option>
+        </select>
+
+        <label for="date">Enter Date (DD-MM-YYYY):</label><br>
         <input type="date" name="date" required><br><br>
-        <input type="submit" value="Predict">
+
+        <input type="submit" value="Predict Stock Price">
     </form>
-    <p>{{ prediction_text }}</p>
+
+    {% if prediction_text %}
+        <div class="prediction-result">
+            <p>{{ prediction_text }}</p>
+        </div>
+    {% endif %}
+</div>
+
 </body>
 </html>

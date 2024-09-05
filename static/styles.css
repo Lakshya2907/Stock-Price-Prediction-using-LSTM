@@ -1,0 +1,106 @@
+/* General styling for the page */
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #1c1c1e;
+    padding: 20px;
+    color: #e0e0e0;
+    text-align: center;
+}
+
+h1 {
+    color: #1abc9c;
+    font-size: 36px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+/* Container for the form */
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #2c2c2e;
+    padding: 30px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    border-top: 5px solid #1abc9c;
+}
+
+/* Styling for form labels */
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px;
+    color: #f0f0f0;
+}
+
+/* Input and select box styling */
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #444;
+    border-radius: 6px;
+    font-size: 16px;
+    background-color: #3a3a3c;
+    color: #f0f0f0;
+}
+
+/* Submit button styling */
+input[type="submit"] {
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 12px 20px;
+    transition: background-color 0.3s ease, transform 0.2s;
+    border-radius: 6px;
+}
+
+/* Hover effect for the submit button */
+input[type="submit"]:hover {
+    background-color: #16a085;
+    transform: scale(1.05);
+}
+
+/* Style for the prediction result box */
+.prediction-result {
+    margin-top: 25px;
+    padding: 15px;
+    background-color: #2f363f;
+    border: 1px solid #2ecc71;
+    color: #27ae60;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Styling for stock price gains */
+.prediction-result.gain {
+    background-color: #243726;
+    color: #2ecc71;
+    border-color: #27ae60;
+}
+
+/* Styling for stock price losses */
+.prediction-result.loss {
+    background-color: #3b2424;
+    color: #e74c3c;
+    border-color: #e74c3c;
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    input, select {
+        padding: 10px;
+    }
+
+    input[type="submit"] {
+        padding: 10px 15px;
+    }
+}
