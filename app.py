@@ -68,8 +68,6 @@ def predict():
     
     # Make prediction using LSTM model
     prediction = model.predict(x_input)
-    
-    # Inverse transform to get the actual stock price
     predicted_price = scaler.inverse_transform(prediction)
     
     return render_template('index.html', prediction_text=f'Predicted Stock Price for {company} on {prediction_date}: {predicted_price[0][0]:.2f}')
