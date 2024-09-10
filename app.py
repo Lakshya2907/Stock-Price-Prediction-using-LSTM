@@ -12,22 +12,22 @@ app = Flask(__name__)
 
 # Load your LSTM model and scaler
 model = pickle.load(open('models/model.pkl', 'rb'))
-scaler = MinMaxScaler(feature_range=(0, 1))  # You can also load a pre-fitted scaler
+scaler = MinMaxScaler(feature_range=(0, 1))
 
-# Allowed companies and date validation function
 allowed_companies = ['AAPL', 'MSFT', 'GOOG', 'AMZN','META','NFLX','TSLA','NVDA','INTC','CSCO']
-def validate_input(company, date):
-    if company not in allowed_companies:
-        return False, f"Invalid company. Choose from {', '.join(allowed_companies)}."
-    
+from datetime import datetime, timedelta
+
+def validate_input(date):
     try:
         input_date = datetime.strptime(date, '%Y-%m-%d').date()
-        if input_date > datetime.now().date():
-            return False, "Date cannot be in the future."
+        max_allowed_date = datetime.now().date() + timedelta(days=60)
+        if input_date > max_allowed_date:
+            return False, "Date cannot be more than 60 days in the future."
     except ValueError:
         return False, "Invalid date format. Use YYYY-MM-DD."
     
     return True, ""
+
 
 @app.route('/')
 def home():
@@ -38,29 +38,23 @@ def predict():
     company = request.form['company']
     prediction_date = request.form['date']
     
-    # Validate inputs
-    is_valid, message = validate_input(company, prediction_date)
+    is_valid, message = validate_input(prediction_date)
     if not is_valid:
         return render_template('index.html', prediction_text=message)
     
-    # Get today's date for historical data fetching
     today_date = datetime.now().strftime('%Y-%m-%d')
     
     # Download stock data for the last 60 days
     stock_symbol = company
-    start_date = (datetime.now() - timedelta(days=365)).strftime('%Y-%m-%d')  # 1 year of data
-    
-    # Use yfinance to get stock data
-    historical_data = yf.download(stock_symbol, start=start_date, end=today_date)
-    
+    prediction_date_obj = datetime.strptime(prediction_date, '%Y-%m-%d')
+    start_date = (prediction_date_obj - timedelta(days=80)).strftime('%Y-%m-%d')
+    historical_data = yf.download(stock_symbol, start=start_date, end=prediction_date_obj)
     if historical_data.empty:
         return render_template('index.html', prediction_text=f"No data found for {company}.")
 
     historical_data = historical_data.sort_index()
-
     # Prepare the data for prediction (scale and reshape)
     scaled_data = scaler.fit_transform(historical_data[['Close']])
-    
     sequence_length = 60
     last_sequence = scaled_data[-sequence_length:]
     x_input = np.array([last_sequence])
